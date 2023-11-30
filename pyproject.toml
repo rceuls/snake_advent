@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "snek-advent"
+version = "0.1.0"
+description = ""
+authors = ["Raf"]
+readme = "README.md"
+packages = [{ include = "snek_advent", from = "snek_advent" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

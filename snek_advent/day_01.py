@@ -1,4 +1,3 @@
-from snek_advent.input import as_lines
 import re
 from functools import reduce
 
@@ -11,7 +10,7 @@ written_out = {
     "6": ["six", "6"],
     "7": ["seven", "7"],
     "8": ["eight", "8"],
-    "9": ["nine", "9"]
+    "9": ["nine", "9"],
 }
 
 written_out_reversed = {
@@ -23,31 +22,50 @@ written_out_reversed = {
     "6": ["six"[::-1], "6"],
     "7": ["seven"[::-1], "7"],
     "8": ["eight"[::-1], "8"],
-    "9": ["nine"[::-1], "9"]
+    "9": ["nine"[::-1], "9"],
 }
 
+
 def part01(lines):
-    print(reduce((lambda p, n: p + (int(''.join([n[0],n[-1]])))),list(map((lambda x: re.findall(r'\d', x)), lines)), 0))
+    print(
+        reduce(
+            (lambda p, n: p + (int("".join([n[0], n[-1]])))),
+            list(map((lambda x: re.findall(r"\d", x)), lines)),
+            0,
+        )
+    )
+
 
 def get_index(line, tgt):
     return line.index(tgt) if tgt in line else -1
 
+
 def part02_parse_line(line, reversed_line):
-    first_number_found, last_number_found, first_item_index, last_item_index = "-1", "-1", 10_000, 10_000
+    first_number_found, last_number_found, first_item_index, last_item_index = (
+        "-1",
+        "-1",
+        10_000,
+        10_000,
+    )
     for wo in written_out:
         for val in written_out[wo]:
             ff_index = get_index(line, val)
             if ff_index != -1 and ff_index < first_item_index:
-                    first_item_index = ff_index
-                    first_number_found = wo
+                first_item_index = ff_index
+                first_number_found = wo
 
         for val_rev in written_out_reversed[wo]:
             fl_index = get_index(reversed_line, val_rev)
             if fl_index != -1 and fl_index < last_item_index:
-                    last_item_index = fl_index
-                    last_number_found = wo
-                    
-    return int(''.join([first_number_found, last_number_found]))
+                last_item_index = fl_index
+                last_number_found = wo
+
+    return int("".join([first_number_found, last_number_found]))
+
 
 def part02(lines):
-    print(reduce(lambda x, y: x + y, (map(lambda l: part02_parse_line(l, l[::-1]), lines))))
+    print(
+        reduce(
+            lambda x, y: x + y, (map(lambda l: part02_parse_line(l, l[::-1]), lines))
+        )
+    )

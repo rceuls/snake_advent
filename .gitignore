@@ -1,1 +1,2 @@
-./resx
+snek_advent/__pycache__/*
+resx/

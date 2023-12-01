@@ -25,12 +25,14 @@ written_out_reversed = {
     "9": ["nine"[::-1], "9"],
 }
 
+compiled_regex = re.compile(r"\d")
+
 
 def part01(lines):
     print(
         reduce(
             (lambda p, n: p + (int("".join([n[0], n[-1]])))),
-            list(map((lambda x: re.findall(r"\d", x)), lines)),
+            list(map((lambda x: compiled_regex.findall(x)), lines)),
             0,
         )
     )

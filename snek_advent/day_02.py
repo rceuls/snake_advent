@@ -3,7 +3,6 @@ from cProfile import Profile
 from pstats import Stats, SortKey
 from timeit import timeit
 
-
 regex_green = re.compile(r"(\d+) (green,?;?)")
 regex_red = re.compile(r"(\d+) (red,?;?)")
 regex_blue = re.compile(r"(\d+) (blue,?;?)")

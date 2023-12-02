@@ -1,5 +1,5 @@
+import re
 from cProfile import Profile
-from pstats import Stats, SortKey
 from timeit import timeit
 
 
@@ -24,24 +24,40 @@ def part02(lines):
     return pwr_total
 
 
+regex_green = re.compile(r"(\d+) (green,?;?)")
+regex_red = re.compile(r"(\d+) (red,?;?)")
+regex_blue = re.compile(r"(\d+) (blue,?;?)")
+
+
 def part01(lines):
     maxes = {"red": 12, "green": 13, "blue": 14}
     game_count = len(lines)
     gauss_total = int(1 / 2 * (game_count * (game_count + 1)))
-    for super_line in map(lambda x: x.replace("Game ", ""), lines):
+    ix = 1
+    for super_line in lines:
         line = super_line.split(":")
-        game_index = int(line[0])
         is_valid = True
-        for game in line[1].split(";"):
-            if not is_valid:
+        for m in regex_red.findall(line[1]):
+            if int(m[0]) > 12:
+                gauss_total -= ix
+                is_valid = False
                 break
-            for color in map(lambda x: x.strip(), game.split(",")):
-                tgt_color = color.split(" ")[1]
-                tgt_count = int(color.split(" ")[0])
-                if tgt_count > maxes[tgt_color]:
-                    gauss_total -= game_index
-                    is_valid = False
-                    break
+        for m in regex_green.findall(line[1]):
+            if int(m[0]) > 13:
+                gauss_total -= ix
+                is_valid = False
+                break
+        for m in regex_blue.findall(line[1]):
+            if int(m[0]) > 14:
+                gauss_total -= ix
+                is_valid = False
+
+                break
+
+        ix += 1
+
+        if not is_valid:
+            break
 
     return gauss_total
 
@@ -59,9 +75,9 @@ def do(iterations, lines, do_profile=False):
 
     if do_profile:
         with Profile() as profile:
-            print(f"{part01(lines) = }")
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+            print(f"{part01(lines) = } (should be 2237)")
+            # (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
 
         with Profile() as profile:
-            print(f"{part02(lines) = }")
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+            print(f"{part02(lines) = } (should be 66681)")
+            # (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

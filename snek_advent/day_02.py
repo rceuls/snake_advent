@@ -13,41 +13,32 @@ def part02(lines):
     pwr_total = 0
     for super_line in lines:
         line = super_line.split(":")
-        max_blue = 0
-        max_red = 0
-        max_green = 0
-        for game in line[1].split(";"):
-            for color in map(lambda x: x.strip(), game.split(",")):
+        max_values = {"blue": 0, "red": 0, "green": 0}
+        for _, game in enumerate(line[1].split(";")):
+            for color in [x.strip() for x in game.split(",")]:
                 tgt_count = int(color.split(" ")[0])
-                if "blue" in color and tgt_count > max_blue:
-                    max_blue = tgt_count
-                elif "red" in color and tgt_count > max_red:
-                    max_red = tgt_count
-                elif tgt_count > max_green:
-                    max_green = tgt_count
-        pwr_total += max_blue * max_green * max_red
+                if "blue" in color and tgt_count > max_values["blue"]:
+                    max_values["blue"] = tgt_count
+                elif "red" in color and tgt_count > max_values["red"]:
+                    max_values["red"] = tgt_count
+                elif "green" in color and tgt_count > max_values["green"]:
+                    max_values["green"] = tgt_count
+        pwr_total += max_values["blue"] * max_values["green"] * max_values["red"]
     return pwr_total
 
 
+def check_failures(line, regex, threshold):
+    fails = regex.search(line)
+    return fails and int(fails.group(1)) > threshold
+
+
 def part01_calc(line, ix):
-    fails_red = next(
-        (m for m in regex_red.finditer(line) if int(m.group(1)) > 12), False
-    )
-    if fails_red:
+    if (
+        check_failures(line, regex_red, 12)
+        or check_failures(line, regex_green, 13)
+        or check_failures(line, regex_blue, 14)
+    ):
         return ix
-    else:
-        fails_green = next(
-            (m for m in regex_green.finditer(line) if int(m.group(1)) > 13), False
-        )
-        if fails_green:
-            return ix
-        else:
-            fails_blue = next(
-                (m for m in regex_blue.finditer(line) if int(m.group(1)) > 14),
-                False,
-            )
-            if fails_blue:
-                return ix
     return 0
 
 

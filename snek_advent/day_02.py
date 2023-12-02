@@ -11,7 +11,7 @@ regex_blue = re.compile(r"(\d+) (blue,?;?)")
 
 def part02(lines):
     pwr_total = 0
-    for super_line in map(lambda x: x.replace("Game ", ""), lines):
+    for super_line in lines:
         line = super_line.split(":")
         max_blue = 0
         max_red = 0

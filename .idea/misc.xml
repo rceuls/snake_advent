@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="enabledOnReformat" value="true" />
     <option name="enabledOnSave" value="true" />
-    <option name="sdkName" value="$USER_HOME$/anaconda3" />
+    <option name="sdkName" value="Python 3.11 (snek-advent)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="$USER_HOME$/anaconda3" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (snek-advent)" project-jdk-type="Python SDK" />
 </project>

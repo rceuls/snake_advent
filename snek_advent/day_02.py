@@ -62,11 +62,12 @@ def do(iterations, lines, do_profile=False):
         f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
     )
 
-    if do_profile:
-        with Profile() as profile:
-            print(f"{part01(lines) = } (should be 2237)")
+    with Profile() as profile:
+        print(f"{part01(lines) = } (should be 2237)")
+        if do_profile:
             (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
 
-        with Profile() as profile:
-            print(f"{part02(lines) = } (should be 66681)")
+    with Profile() as profile:
+        print(f"{part02(lines) = } (should be 66681)")
+        if do_profile:
             (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

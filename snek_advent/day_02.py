@@ -27,18 +27,25 @@ def part02(lines):
     return pwr_total
 
 
-def check_failures(line, regex, threshold):
-    fails = regex.search(line)
-    return fails and int(fails.group(1)) > threshold
-
-
 def part01_calc(line, ix):
-    if (
-        check_failures(line, regex_red, 12)
-        or check_failures(line, regex_green, 13)
-        or check_failures(line, regex_blue, 14)
-    ):
+    fails_red = next(
+        (m for m in regex_red.finditer(line) if int(m.group(1)) > 12), False
+    )
+    if fails_red:
         return ix
+    else:
+        fails_green = next(
+            (m for m in regex_green.finditer(line) if int(m.group(1)) > 13), False
+        )
+        if fails_green:
+            return ix
+        else:
+            fails_blue = next(
+                (m for m in regex_blue.finditer(line) if int(m.group(1)) > 14),
+                False,
+            )
+            if fails_blue:
+                return ix
     return 0
 
 

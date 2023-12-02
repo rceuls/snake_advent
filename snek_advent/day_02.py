@@ -1,6 +1,5 @@
 import re
 from cProfile import Profile
-from timeit import timeit
 
 
 def part02(lines):
@@ -33,51 +32,58 @@ def part01(lines):
     maxes = {"red": 12, "green": 13, "blue": 14}
     game_count = len(lines)
     gauss_total = int(1 / 2 * (game_count * (game_count + 1)))
-    ix = 1
+    ix = 0
     for super_line in lines:
         line = super_line.split(":")
         is_valid = True
-        for m in regex_red.findall(line[1]):
-            if int(m[0]) > 12:
-                gauss_total -= ix
-                is_valid = False
-                break
-        for m in regex_green.findall(line[1]):
-            if int(m[0]) > 13:
-                gauss_total -= ix
-                is_valid = False
-                break
-        for m in regex_blue.findall(line[1]):
-            if int(m[0]) > 14:
-                gauss_total -= ix
-                is_valid = False
-
-                break
-
         ix += 1
 
+        for m in regex_red.findall(line[1]):
+            if int(m[0]) > 12:
+                is_valid = False
+                print(m, line)
+                break
         if not is_valid:
+            gauss_total -= ix
+            break
+
+        for m in regex_green.findall(line[1]):
+            if int(m[0]) > 13:
+                is_valid = False
+                print(m, line)
+                break
+        if not is_valid:
+            gauss_total -= ix
+            break
+
+        for m in regex_blue.findall(line[1]):
+            if int(m[0]) > 14:
+                is_valid = False
+                print(m, line)
+                break
+        if not is_valid:
+            gauss_total -= ix
             break
 
     return gauss_total
 
 
 def do(iterations, lines, do_profile=False):
-    total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-    print(
-        f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-    )
+    # total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
+    # print(
+    #     f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+    # )
 
-    total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-    print(
-        f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-    )
+    # total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
+    # print(
+    #     f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+    # )
 
     if do_profile:
         with Profile() as profile:
             print(f"{part01(lines) = } (should be 2237)")
             # (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
 
-        with Profile() as profile:
-            print(f"{part02(lines) = } (should be 66681)")
-            # (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+        # with Profile() as profile:
+        #     print(f"{part02(lines) = } (should be 66681)")
+        #     # (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

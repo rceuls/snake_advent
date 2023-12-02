@@ -28,24 +28,15 @@ def part02(lines):
 
 
 def part01_calc(line, ix):
-    fails_red = next(
-        (m for m in regex_red.finditer(line) if int(m.group(1)) > 12), False
-    )
-    if fails_red:
-        return ix
-    else:
-        fails_green = next(
-            (m for m in regex_green.finditer(line) if int(m.group(1)) > 13), False
+    if (
+        next((m for m in regex_red.finditer(line) if int(m.group(1)) > 12), False)
+        or next((m for m in regex_green.finditer(line) if int(m.group(1)) > 13), False)
+        or next(
+            (m for m in regex_blue.finditer(line) if int(m.group(1)) > 14),
+            False,
         )
-        if fails_green:
-            return ix
-        else:
-            fails_blue = next(
-                (m for m in regex_blue.finditer(line) if int(m.group(1)) > 14),
-                False,
-            )
-            if fails_blue:
-                return ix
+    ):
+        return ix
     return 0
 
 

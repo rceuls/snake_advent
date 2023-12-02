@@ -52,15 +52,16 @@ def part01(lines):
 
 
 def do(iterations, lines, do_profile=False):
-    total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-    print(
-        f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-    )
+    if iterations > 0:
+        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
+        print(
+            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+        )
 
-    total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-    print(
-        f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-    )
+        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
+        print(
+            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+        )
 
     with Profile() as profile:
         print(f"{part01(lines) = } (should be 2237)")

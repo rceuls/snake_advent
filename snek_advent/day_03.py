@@ -1,6 +1,5 @@
 import re
 from cProfile import Profile
-from functools import reduce
 from pstats import Stats, SortKey
 from timeit import timeit
 
@@ -20,34 +19,55 @@ def check_overlap(start, end, match):
 def part02(lines):
     actual_lines = do_fluff(lines)
     total = 0
-    for ix in range(1, len(actual_lines) - 1):
-        previous_line = actual_lines[ix - 1]
-        current_line = actual_lines[ix]
-        next_line = actual_lines[ix + 1]
+    matches_per_line = {}
+    sterrekes_per_line = {}
 
-        for hit in compiled_sterreke_regex.finditer(
-            current_line,
-        ):
-            numbers_previous_line = compiled_int_regex.finditer(previous_line)
-            numbers_current_line = compiled_int_regex.finditer(current_line)
-            numbers_next_line = compiled_int_regex.finditer(next_line)
+    for ix in range(1, len(actual_lines) - 1):
+        if ix - 1 not in matches_per_line:
+            previous_line = actual_lines[ix - 1]
+            matches_per_line[ix - 1] = list(compiled_int_regex.finditer(previous_line))
+        if ix not in matches_per_line:
+            matches_per_line[ix] = list(compiled_int_regex.finditer(actual_lines[ix]))
+        if ix + 1 not in matches_per_line:
+            next_line = actual_lines[ix + 1]
+            matches_per_line[ix + 1] = list(compiled_int_regex.finditer(next_line))
+        if ix not in sterrekes_per_line:
+            sterrekes_per_line[ix] = list(
+                compiled_sterreke_regex.finditer(actual_lines[ix])
+            )
+
+        for hit in sterrekes_per_line[ix]:
+            numbers_previous_line = matches_per_line[ix - 1]
+            numbers_current_line = matches_per_line[ix]
+            numbers_next_line = matches_per_line[ix + 1]
             (x, y) = hit.span()
             numbers = []
+
             for n in numbers_previous_line:
+                if len(numbers) == 2:
+                    break
                 iv = check_overlap(x, y, n)
                 if iv is not None:
                     numbers.append(iv)
+
             for n in numbers_next_line:
+                if len(numbers) == 2:
+                    break
                 iv = check_overlap(x, y, n)
                 if iv is not None:
                     numbers.append(iv)
+
             for n in numbers_current_line:
+                if len(numbers) == 2:
+                    break
                 iv = check_overlap(x, y, n)
                 if iv is not None:
                     numbers.append(iv)
+
             if len(numbers) == 2:
-                total += reduce(lambda a, b: a * b, numbers, 1)
-    return total  # example 467835
+                total += numbers[0] * numbers[1]
+
+    return total
 
 
 def do_fluff(lines):
@@ -63,13 +83,20 @@ def do_fluff(lines):
 def part01(lines):
     actual_lines = do_fluff(lines)
     total = 0
+    matches_per_line = {}
     for ix in range(1, len(actual_lines) - 1):
         previous_line = actual_lines[ix - 1]
         current_line = actual_lines[ix]
         next_line = actual_lines[ix + 1]
-        for hit in compiled_int_regex.finditer(
-            current_line,
-        ):
+
+        if ix - 1 not in matches_per_line:
+            matches_per_line[ix - 1] = compiled_int_regex.finditer(previous_line)
+        if ix not in matches_per_line:
+            matches_per_line[ix] = compiled_int_regex.finditer(current_line)
+        if ix + 1 not in matches_per_line:
+            matches_per_line[ix + 1] = compiled_int_regex.finditer(next_line)
+
+        for hit in matches_per_line[ix]:
             full = hit.group(1)
             current_line_prev_and_next = (
                 current_line[hit.span()[0] - 1] + current_line[hit.span()[1]]

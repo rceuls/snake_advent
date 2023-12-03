@@ -10,7 +10,7 @@ from snek_advent.day_04 import do as day04_do
 iterations = 100
 run_everything = False
 day = datetime.now().day
-do_profile = False
+do_profile = True
 
 with Profile() as profile:
     if run_everything or day == 1:

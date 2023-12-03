@@ -6,15 +6,15 @@ from snek_advent.day_01 import do as day01_do
 from snek_advent.day_02 import do as day02_do
 from snek_advent.day_03 import do as day03_do
 
-iterations = 0
+iterations = 100
 run_everything = False
 day = datetime.now().day
 do_profile = False
 
 with Profile() as profile:
     if run_everything or day == 1:
+        print("☃️☃️☃️ day 01 ☃️☃️☃️")
         with open("./resx/day01.txt", "r") as f:
-            print("🧝‍♀️🧝‍♀️🧝‍♀️ day 01 🧝‍♀️🧝‍♀️🧝‍♀️")
             day01_do(iterations, f.readlines(), do_profile)
     if run_everything or day == 2:
         print("🎅🎅🎅 day 02 🎅🎅🎅")

@@ -28,6 +28,9 @@ def part02(lines):
     return total
 
 
+pre_compiled_whitespace_replacer = re.compile(r"\s+")
+
+
 def part01(lines):
     total = 0
     games = {}
@@ -37,9 +40,17 @@ def part01(lines):
         (_, game) = lines[ix].split(":")
         (winning_numbers_s, numbers_s) = game.split("|")
         winning_numbers = [
-            int(x) for x in re.sub(r"\s+", " ", winning_numbers_s.strip()).split(" ")
+            int(x)
+            for x in pre_compiled_whitespace_replacer.sub(
+                " ", winning_numbers_s.strip()
+            ).split(" ")
         ]
-        numbers = [int(x) for x in re.sub(r"\s+", " ", numbers_s.strip()).split(" ")]
+        numbers = [
+            int(x)
+            for x in pre_compiled_whitespace_replacer.sub(" ", numbers_s.strip()).split(
+                " "
+            )
+        ]
         count = 0
         for n in numbers:
             if n in winning_numbers:

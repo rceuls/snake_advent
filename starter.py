@@ -10,7 +10,7 @@ from snek_advent.day_04 import do as day04_do
 iterations = 100
 run_everything = False
 day = datetime.now().day
-do_profile = True
+do_profile = False
 
 with Profile() as profile:
     if run_everything or day == 1:
@@ -27,7 +27,7 @@ with Profile() as profile:
             day03_do(iterations, f.readlines(), do_profile)
     if run_everything or day == 4:
         print("🎅🎅🎅 day 04 🎅🎅🎅")
-        with open("./resx/day4.txt", "r") as f:
+        with open("./resx/day04.txt", "r") as f:
             day04_do(iterations, f.readlines(), do_profile)
 
     print(f"\nTotal runtime {Stats(profile).get_stats_profile().total_tt} seconds")

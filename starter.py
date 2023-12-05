@@ -14,6 +14,7 @@ run_everything = False
 day = datetime.now().day
 do_profile = False
 
+
 if __name__ == "__main__":
     with Profile() as profile:
         if run_everything or day == 1:

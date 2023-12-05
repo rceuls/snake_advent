@@ -8,7 +8,7 @@ from snek_advent.day_03 import do as day03_do
 from snek_advent.day_04 import do as day04_do
 from snek_advent.day_05 import do as day05_do
 
-iterations = 0
+iterations = 100
 run_everything = False
 day = datetime.now().day
 do_profile = False

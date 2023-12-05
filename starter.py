@@ -7,6 +7,7 @@ from snek_advent.day_02 import do as day02_do
 from snek_advent.day_03 import do as day03_do
 from snek_advent.day_04 import do as day04_do
 from snek_advent.day_05 import do as day05_do
+from snek_advent.day_06 import do as day06_do
 
 iterations = 100
 run_everything = False
@@ -35,5 +36,9 @@ if __name__ == "__main__":
             print("☃️☃️☃️ day 05 ☃️☃️☃️")
             with open("./resx/day05.txt", "r") as f:
                 day05_do(iterations, f.read(), do_profile)
+        if run_everything or day == 4:
+            print("🎅🎅🎅 day 06 🎅🎅🎅")
+            with open("./resx/day06.txt", "r") as f:
+                day06_do(iterations, f.readlines(), do_profile)
 
         print(f"\nTotal runtime {Stats(profile).get_stats_profile().total_tt} seconds")

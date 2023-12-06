@@ -37,7 +37,7 @@ if __name__ == "__main__":
             print("☃️☃️☃️ day 05 ☃️☃️☃️")
             with open("./resx/day05.txt", "r") as f:
                 day05_do(iterations, f.read(), do_profile)
-        if run_everything or day == 4:
+        if run_everything or day == 6:
             print("🎅🎅🎅 day 06 🎅🎅🎅")
             with open("./resx/day06.txt", "r") as f:
                 day06_do(iterations, f.readlines(), do_profile)

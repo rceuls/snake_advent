@@ -45,5 +45,5 @@ if __name__ == "__main__":
         if run_everything or day == 7:
             print("☃️☃️☃️ day 07 ☃️☃️☃️")
             with open("./resx/day07.txt", "r") as f:
-                day07_do(iterations, f.readlines(), do_profile)
+                day07_do(iterations, [x.strip() for x in f.readlines()], do_profile)
         print(f"\nTotal runtime {Stats(profile).get_stats_profile().total_tt} seconds")

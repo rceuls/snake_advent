@@ -1,6 +1,6 @@
 from cProfile import Profile
-from enum import Enum, IntEnum
-from functools import cmp_to_key, reduce, total_ordering
+from enum import IntEnum
+from functools import cmp_to_key
 from itertools import groupby
 from pstats import Stats, SortKey
 from timeit import timeit
@@ -52,13 +52,11 @@ class MainScoreWeight(IntEnum):
 
 
 class Draw:
-    def __init__(self, hand, wager, main_score, resolver):
+    def __init__(self, hand, wager, main_score, resolver, orig_hand):
         self.hand = hand
         self.wager = int(wager)
         self.main_score = main_score
-        self.sub_score = [resolver[x] for x in hand]
-        if "J" in hand:
-            print(str(self))
+        self.sub_score = [resolver[x] for x in orig_hand]
 
     def __str__(self) -> str:
         return f"{''.join(self.hand)} ({self.wager})\t{self.main_score.name}\t{self.sub_score}"
@@ -78,23 +76,29 @@ def compare_draws(first, second):
     return 0
 
 
-def as_draw(counts, raw_hand, wager, resolver):
+def as_draw(counts, raw_hand, wager, resolver, orig_hand):
     if 5 in counts:
-        return Draw(raw_hand, wager, MainScoreWeight.FIVE_OF_A_KIND, resolver)
+        return Draw(
+            raw_hand, wager, MainScoreWeight.FIVE_OF_A_KIND, resolver, orig_hand
+        )
     elif 4 in counts:
-        return Draw(raw_hand, wager, MainScoreWeight.FOUR_OF_A_KIND, resolver)
+        return Draw(
+            raw_hand, wager, MainScoreWeight.FOUR_OF_A_KIND, resolver, orig_hand
+        )
     elif 3 in counts and 2 in counts:
-        return Draw(raw_hand, wager, MainScoreWeight.FULL_HOUSE, resolver)
+        return Draw(raw_hand, wager, MainScoreWeight.FULL_HOUSE, resolver, orig_hand)
     elif 3 in counts:
-        return Draw(raw_hand, wager, MainScoreWeight.THREE_OF_A_KIND, resolver)
+        return Draw(
+            raw_hand, wager, MainScoreWeight.THREE_OF_A_KIND, resolver, orig_hand
+        )
     elif len([x for x in counts if x == 2]) == 2:
-        return Draw(raw_hand, wager, MainScoreWeight.TWO_PAIR, resolver)
+        return Draw(raw_hand, wager, MainScoreWeight.TWO_PAIR, resolver, orig_hand)
     elif 2 in counts:
-        return Draw(raw_hand, wager, MainScoreWeight.ONE_PAIR, resolver)
+        return Draw(raw_hand, wager, MainScoreWeight.ONE_PAIR, resolver, orig_hand)
     elif len(counts) == 5:
-        return Draw(raw_hand, wager, MainScoreWeight.HIGH_CARD, resolver)
+        return Draw(raw_hand, wager, MainScoreWeight.HIGH_CARD, resolver, orig_hand)
     else:
-        return Draw(raw_hand, wager, MainScoreWeight.OTHER, resolver)
+        return Draw(raw_hand, wager, MainScoreWeight.OTHER, resolver, orig_hand)
 
 
 def group_cards(raw_hand):
@@ -111,39 +115,40 @@ def parse(draw):
     grouped = group_cards(raw_hand)
     counts = grouped.values()
     resolver = key_resolver
-    return as_draw(counts, raw_hand, wager, resolver)
+    return as_draw(counts, raw_hand, wager, resolver, raw_hand)
 
 
 def parse_joker(draw):
     (raw_hand, wager) = draw.strip().split(" ")
     grouped = group_cards(raw_hand)
     counts = grouped.values()
-    resolver = key_resolver_joker
     joker_count = grouped["J"] if "J" in grouped else 0
     if joker_count != 0:
-        other_vals = []
-        for l in grouped.keys():
-            if l != "J":
-                other_vals.append((l, grouped[l]))
-
+        other_vals = grouped.copy()
+        del other_vals["J"]
         if joker_count == 5:
-            return Draw(raw_hand, wager, MainScoreWeight.FIVE_OF_A_KIND, resolver)
-        maximum_count = max(grouped.values())
+            return Draw(
+                raw_hand,
+                wager,
+                MainScoreWeight.FIVE_OF_A_KIND,
+                key_resolver_joker,
+                raw_hand,
+            )
+        maximum_count = max(other_vals.values())
 
-        # print(raw_hand, "->", other_vals, " (", joker_count, ")")
-        for key in grouped.keys():
-            if maximum_count == grouped[key]:
+        for key in other_vals.keys():
+            if maximum_count == other_vals[key]:
                 updated_hand = raw_hand.replace("J", key)
-                updated_grouped = group_cards(updated_hand)
                 return as_draw(
-                    updated_grouped.values(),
-                    raw_hand,
+                    group_cards(updated_hand).values(),
+                    updated_hand,
                     wager,
-                    resolver,
+                    key_resolver_joker,
+                    raw_hand,
                 )
 
     else:
-        return as_draw(counts, raw_hand, wager, resolver)
+        return as_draw(counts, raw_hand, wager, key_resolver_joker, raw_hand)
 
 
 def part01(lines):
@@ -162,9 +167,6 @@ def part02(lines):
     for ix in range(0, len(sorted_draws)):
         total += (ix + 1) * sorted_draws[ix].wager
     return total
-    # 251971761
-    # 251855847
-    # 252366738 too high
 
 
 def do(iterations, lines, do_profile=False):
@@ -179,12 +181,12 @@ def do(iterations, lines, do_profile=False):
             f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
         )
 
-    # with Profile() as profile:
-    #     print(f"{part01(lines) = } (should be 250370104)")
-    #     if do_profile:
-    #         (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+    with Profile() as profile:
+        print(f"{part01(lines) = } (should be 250370104)")
+        if do_profile:
+            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
 
     with Profile() as profile:
-        print(f"{part02(lines) = } (should be 46173809)")
+        print(f"{part02(lines) = } (should be 251735672)")
         if do_profile:
             (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

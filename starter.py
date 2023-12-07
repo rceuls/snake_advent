@@ -13,7 +13,7 @@ from snek_advent.day_07 import do as day07_do
 iterations = 100
 run_everything = False
 day = datetime.now().day
-do_profile = False
+do_profile = True
 
 
 if __name__ == "__main__":

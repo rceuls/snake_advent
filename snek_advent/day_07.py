@@ -147,45 +147,63 @@ def parse_joker(draw):
         return Draw(raw_hand, wager, key_resolver_joker, raw_hand)
 
 
-def part01(lines):
-    with Pool() as pool:
-        draws = pool.map(parse, lines)
-        sorted_draws = sorted(draws)
-        total = 0
-        for ix in range(0, 1000):
-            total += (ix + 1) * sorted_draws[ix].wager
-        return total
+def calculate_totals(items):
+    total = 0
+    for ix in zip(range(1, len(items) + 1), items):
+        total += ix[0] * ix[1].wager
+    return total
 
 
-def part02(lines):
-    with Pool() as pool:
+def part02(lines, cores):
+    with Pool(cores) as pool:
         draws = pool.map(parse_joker, lines)
         sorted_draws = sorted(draws)
-        total = 0
-        for ix in range(0, 1000):
-            total += (ix + 1) * sorted_draws[ix].wager
-        return total
+        return calculate_totals(sorted_draws)
+
+
+def part01(lines, cores):
+    with Pool(cores) as pool:
+        draws = pool.map(parse, lines)
+        sorted_draws = sorted(draws)
+        return calculate_totals(sorted_draws)
 
 
 def do(iterations, lines, do_profile=False):
     if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
+        win_1_cpu_count = 1
+        win_2_cpu_count = 1
+        win_1 = 1
+        win_2 = 1
+        for ix in range(1, 16):
+            total_time = timeit(
+                lambda: part01(lines, ix), number=iterations, globals=globals()
+            )
+            if (total_time / iterations) < win_1:
+                win_1_cpu_count = ix
+                win_1 = total_time / iterations
 
-        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
+            total_time = timeit(
+                lambda: part02(lines, ix), number=iterations, globals=globals()
+            )
+
+            if (total_time / iterations) < win_2:
+                win_2_cpu_count = ix
+                win_2 = total_time / iterations
+
         print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+            f"Average time is {win_1:.10f} seconds ({iterations} iterations, {win_1_cpu_count} cores)"
+        )
+        print(
+            f"Average time is {win_2:.10f} seconds ({iterations} iterations, {win_2_cpu_count} cores)"
         )
 
     if iterations == 0:
         with Profile() as profile:
-            print(f"{part01(lines) = } (should be 250370104)")
+            print(f"{part01(lines, 16) = } (should be 250370104)")
             if do_profile:
                 (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
 
         with Profile() as profile:
-            print(f"{part02(lines) = } (should be 251735672)")
+            print(f"{part02(lines, 16) = } (should be 251735672)")
             if do_profile:
                 (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

@@ -1,6 +1,4 @@
-from cProfile import Profile
 from datetime import datetime
-from pstats import Stats, SortKey
 from timeit import timeit
 
 import snek_advent.day_01 as day01
@@ -12,10 +10,9 @@ import snek_advent.day_06 as day06
 import snek_advent.day_07 as day07
 import snek_advent.day_08 as day08
 
-iterations = 100
-run_everything = True
+iterations = 1
+run_everything = False
 day = datetime.now().day
-do_profile = False
 
 
 def do(part01, part02, friendly_day, strip_lines=True, full_read=False):
@@ -42,35 +39,22 @@ def do(part01, part02, friendly_day, strip_lines=True, full_read=False):
                 f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
             )
 
-        if do_profile:
-            with Profile() as profile:
-                print(f"{part01(lines) = }")
-                (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
-            with Profile() as profile:
-                print(f"{part02(lines) = }")
-                (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
 
 if __name__ == "__main__":
-    with Profile() as profile:
-        if run_everything or day == 1:
-            do(day01.part01, day01.part02, "01")
-        if run_everything or day == 2:
-            do(day02.part01, day02.part02, "02")
-        if run_everything or day == 3:
-            do(day03.part01, day03.part02, "03", strip_lines=False)
-        if run_everything or day == 4:
-            do(day04.part01, day04.part02, "04")
-        if run_everything or day == 5:
-            print(
-                "sadly, part one executes two times as part two as it takes half an hour"
-            )
-            do(day05.part01, day05.part01, "05", full_read=True)
-        if run_everything or day == 6:
-            do(day06.part01, day06.part02, "06")
-        if run_everything or day == 7:
-            do(day07.part01, day07.part02, "07")
-        if run_everything or day == 8:
-            do(day08.part01, day08.part02, "08")
-        print(f"\nTotal runtime {Stats(profile).get_stats_profile().total_tt} seconds")
+    if run_everything or day == 1:
+        do(day01.part01, day01.part02, "01")
+    if run_everything or day == 2:
+        do(day02.part01, day02.part02, "02")
+    if run_everything or day == 3:
+        do(day03.part01, day03.part02, "03", strip_lines=False)
+    if run_everything or day == 4:
+        do(day04.part01, day04.part02, "04")
+    if run_everything or day == 5:
+        print("sadly, part one executes two times as part two as it takes half an hour")
+        do(day05.part01, day05.part01, "05", full_read=True)
+    if run_everything or day == 6:
+        do(day06.part01, day06.part02, "06")
+    if run_everything or day == 7:
+        do(day07.part01, day07.part02, "07")
+    if run_everything or day == 8:
+        do(day08.part01, day08.part02, "08")

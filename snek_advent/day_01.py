@@ -1,8 +1,7 @@
 import re
-from cProfile import Profile
 from functools import reduce
-from pstats import Stats, SortKey
-from timeit import timeit
+
+from snek_advent import validate_and_return
 
 written_out = {
     1: ["one", "1", "one"[::-1]],
@@ -20,11 +19,12 @@ compiled_regex = re.compile(r"\d")
 
 
 def part01(lines):
-    return reduce(
+    value = reduce(
         (lambda p, n: p + int(f"{n[0]}{n[-1]}")),
         map((lambda x: compiled_regex.findall(x)), lines),
         0,
     )
+    return validate_and_return(54597, value)
 
 
 def part02_parse_line(line, reversed_line):
@@ -52,29 +52,7 @@ def part02_parse_line(line, reversed_line):
 
 
 def part02(lines):
-    return reduce(
+    value = reduce(
         lambda x, y: x + y, map(lambda l: part02_parse_line(l, l[::-1]), lines)
     )
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-    with Profile() as profile:
-        print(f"{part01(lines) = } (should be 54597)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
-    with Profile() as profile:
-        print(f"{part02(lines) = } (should be 54504)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+    return validate_and_return(54504, value)

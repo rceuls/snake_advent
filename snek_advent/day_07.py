@@ -1,11 +1,9 @@
-from cProfile import Profile
 from enum import IntEnum
 from functools import total_ordering
 from itertools import groupby
 from multiprocessing import Pool
-from pstats import Stats, SortKey
-from timeit import timeit
 
+from snek_advent import validate_and_return
 
 key_resolver = {
     "A": 14,
@@ -52,14 +50,6 @@ class MainScoreWeight(IntEnum):
     OTHER = 1
 
 
-#
-# def group_cards(raw_hand):
-#     hand = sorted(raw_hand)
-#     amounts = [{x: len(list(y))} for x, y in groupby(hand)]
-#     base = {}
-#     for l in amounts:
-#         base.update(l)
-#     return base
 def group_cards(target):
     return {key: len(list(value)) for key, value in groupby(sorted(target))}
 
@@ -154,56 +144,17 @@ def calculate_totals(items):
     return total
 
 
-def part02(lines, cores):
-    with Pool(cores) as pool:
+def part02(lines):
+    with Pool(16) as pool:
         draws = pool.map(parse_joker, lines)
         sorted_draws = sorted(draws)
-        return calculate_totals(sorted_draws)
+        value = calculate_totals(sorted_draws)
+        return validate_and_return(251735672, value)
 
 
-def part01(lines, cores):
-    with Pool(cores) as pool:
+def part01(lines):
+    with Pool(16) as pool:
         draws = pool.map(parse, lines)
         sorted_draws = sorted(draws)
-        return calculate_totals(sorted_draws)
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        win_1_cpu_count = 1
-        win_2_cpu_count = 1
-        win_1 = 1
-        win_2 = 1
-        for ix in range(1, 16):
-            total_time = timeit(
-                lambda: part01(lines, ix), number=iterations, globals=globals()
-            )
-            if (total_time / iterations) < win_1:
-                win_1_cpu_count = ix
-                win_1 = total_time / iterations
-
-            total_time = timeit(
-                lambda: part02(lines, ix), number=iterations, globals=globals()
-            )
-
-            if (total_time / iterations) < win_2:
-                win_2_cpu_count = ix
-                win_2 = total_time / iterations
-
-        print(
-            f"Average time is {win_1:.10f} seconds ({iterations} iterations, {win_1_cpu_count} cores)"
-        )
-        print(
-            f"Average time is {win_2:.10f} seconds ({iterations} iterations, {win_2_cpu_count} cores)"
-        )
-
-    if iterations == 0:
-        with Profile() as profile:
-            print(f"{part01(lines, 16) = } (should be 250370104)")
-            if do_profile:
-                (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
-        with Profile() as profile:
-            print(f"{part02(lines, 16) = } (should be 251735672)")
-            if do_profile:
-                (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+        value = calculate_totals(sorted_draws)
+        return validate_and_return(250370104, value)

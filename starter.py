@@ -1,28 +1,57 @@
 from cProfile import Profile
 from datetime import datetime
-from pstats import Stats
+from pstats import Stats, SortKey
+from timeit import timeit
 
-from snek_advent.day_01 import do as day01_do
+import snek_advent.day_01 as day01
+import snek_advent.day_06 as day06
+import snek_advent.day_07 as day07
+import snek_advent.day_08 as day08
 from snek_advent.day_02 import do as day02_do
 from snek_advent.day_03 import do as day03_do
 from snek_advent.day_04 import do as day04_do
 from snek_advent.day_05 import do as day05_do
-from snek_advent.day_06 import do as day06_do
-from snek_advent.day_07 import do as day07_do
-from snek_advent.day_08 import do as day08_do
 
 iterations = 100
-run_everything = False
+run_everything = True
 day = datetime.now().day
 do_profile = False
+
+
+def do(part01, part02, friendly_day):
+    with open(f"./resx/day{friendly_day}.txt", "r") as f:
+        lines = [x.strip() for x in f.readlines()]
+
+        if iterations > 0:
+            total_time = timeit(
+                lambda: part01(lines), number=iterations, globals=globals()
+            )
+            print(
+                f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+            )
+
+            total_time = timeit(
+                lambda: part02(lines), number=iterations, globals=globals()
+            )
+            print(
+                f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
+            )
+
+        if do_profile:
+            with Profile() as profile:
+                print(f"{part01(lines) = }")
+                (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+
+            with Profile() as profile:
+                print(f"{part02(lines) = }")
+                (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
 
 
 if __name__ == "__main__":
     with Profile() as profile:
         if run_everything or day == 1:
             print("☃️☃️☃️ day 01 ☃️☃️☃️")
-            with open("./resx/day01.txt", "r") as f:
-                day01_do(iterations, f.readlines(), do_profile)
+            do(day01.part01, day01.part02, "01")
         if run_everything or day == 2:
             print("🎅🎅🎅 day 02 🎅🎅🎅")
             with open("./resx/day02.txt", "r") as f:
@@ -41,14 +70,11 @@ if __name__ == "__main__":
                 day05_do(iterations, f.read(), do_profile)
         if run_everything or day == 6:
             print("🎅🎅🎅 day 06 🎅🎅🎅")
-            with open("./resx/day06.txt", "r") as f:
-                day06_do(iterations, f.readlines(), do_profile)
+            do(day06.part01, day06.part02, "06")
         if run_everything or day == 7:
             print("☃️☃️☃️ day 07 ☃️☃️☃️")
-            with open("./resx/day07.txt", "r") as f:
-                day07_do(iterations, [x.strip() for x in f.readlines()], do_profile)
+            do(day07.part01, day07.part02, "07")
         if run_everything or day == 8:
             print("🎅🎅🎅 day 08 🎅🎅🎅")
-            with open("./resx/day08.txt", "r") as f:
-                day08_do(iterations, [x.strip() for x in f.readlines()], do_profile)
+            do(day08.part01, day08.part02, "08")
         print(f"\nTotal runtime {Stats(profile).get_stats_profile().total_tt} seconds")

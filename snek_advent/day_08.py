@@ -1,56 +1,4 @@
-from cProfile import Profile
-from pstats import Stats, SortKey
-from timeit import timeit
-
-
-class TravelNode:
-    def __init__(self, line, is_part_one):
-        self.right = None
-        self.left = None
-        self.home_label = line[0:3]
-        self.home_end_label = line[2:3]
-        self.left_label = line[7:10]
-        self.right_label = line[12:15]
-        self.until_end = None
-        if is_part_one:
-            self.is_end_node = self.home_label == "ZZZ"
-        else:
-            self.is_end_node = self.home_end_label == "Z"
-
-    def set_nodes(self, left, right):
-        self.left = left
-        self.right = right
-
-    def __repr__(self):
-        return f"{self.home_label} -> [{self.until_end}]"
-
-    def __eq__(self, other):
-        return other.home_label == self.home_label
-
-    def __hash__(self):
-        return hash(self.home_label)
-
-
-def get_next_node(other_nodes, move, current_node):
-    return other_nodes[
-        (current_node.left_label if move == "L" else current_node.right_label)
-    ]
-
-
-def traverse(next_move, current_node):
-    return current_node.right if next_move == "R" else current_node.left
-
-
-def traverse_until_end(moves, current_node):
-    current_node_traversing = current_node
-    count = 0
-    while True:
-        for move in moves:
-            current_node_traversing = traverse(move, current_node_traversing)
-            count += 1
-            if current_node_traversing.is_end_node:
-                current_node.until_end = (count, current_node_traversing)
-                return current_node_traversing
+from snek_advent import validate_and_return
 
 
 def calculate_lcm(arr):
@@ -59,7 +7,6 @@ def calculate_lcm(arr):
         num1 = lcm
         num2 = arr[i]
         gcd = 1
-        # Finding GCD using Euclidean algorithm
         while num2 != 0:
             temp = num2
             num2 = num1 % num2
@@ -69,44 +16,46 @@ def calculate_lcm(arr):
     return lcm
 
 
+def traverse_dictionary(moves, lookups, label):
+    count = 0
+    while True:
+        for move in moves:
+            label = (
+                lookups[label]["right_label"]
+                if move == "R"
+                else lookups[label]["left_label"]
+            )
+            count += 1
+            if lookups[label]["is_end_node"]:
+                return count
+
+
+def convert_to_node(line, is_part_one):
+    is_end = line[0:3] == "ZZZ" if is_part_one else line[2:3] == "Z"
+    is_start = line[0:3] == "AAA" if is_part_one else line[2:3] == "A"
+    return {
+        "home_label": line[0:3],
+        "left_label": line[7:10],
+        "right_label": line[12:15],
+        "is_end_node": is_end,
+        "is_start_node": is_start,
+    }
+
+
 def part02(lines):
-    nodes = [TravelNode(x, False) for x in lines[2:]]
-    nodes_dict = {node.home_label: node for node in nodes}
-    for node in nodes:
-        node.set_nodes(nodes_dict[node.left_label], nodes_dict[node.right_label])
+    nodes = [convert_to_node(x, False) for x in lines[2:]]
+    nodes_dict = {node["home_label"]: node for node in nodes}
 
-    for node in [n for n in nodes if n.home_end_label == "A"]:
-        traverse_until_end(lines[0], node)
+    target_labels = [n for n in nodes if n["is_start_node"]]
+    distances = []
 
-    return calculate_lcm([n.until_end[0] for n in nodes if n.home_end_label == "A"])
+    for node in target_labels:
+        distances.append(traverse_dictionary(lines[0], nodes_dict, node["home_label"]))
+
+    return validate_and_return(12030780859469, calculate_lcm(distances))
 
 
 def part01(lines):
-    nodes = [TravelNode(x, True) for x in lines[2:]]
-    nodes_dict = {node.home_label: node for node in nodes}
-    for node in nodes:
-        node.set_nodes(nodes_dict[node.left_label], nodes_dict[node.right_label])
-    traverse_until_end(lines[0], nodes_dict["AAA"])
-    return nodes_dict["AAA"].until_end[0]
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-    with Profile() as profile:
-        print(f"{part01(lines) = } (should be 12169)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-    with Profile() as profile:
-        print(f"{part02(lines) = } (should be 12030780859469)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+    nodes = [convert_to_node(x, True) for x in lines[2:]]
+    nodes_dict = {node["home_label"]: node for node in nodes}
+    return validate_and_return(12169, traverse_dictionary(lines[0], nodes_dict, "AAA"))

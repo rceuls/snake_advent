@@ -1,9 +1,8 @@
 import cmath
 import math
 import re
-from cProfile import Profile
-from pstats import Stats, SortKey
-from timeit import timeit
+
+from snek_advent import validate_and_return
 
 digit_regex = re.compile("\d+")
 
@@ -31,47 +30,29 @@ def quadratic(race_time, distance):
 
 def part02(lines):
     races = list(parse_lines([x.replace(" ", "") for x in lines]))
-
-    return math.prod(
-        [
-            len(range(a, b + 1))
-            for a, b in [
-                quadratic(race_time, distance) for race_time, distance in races
+    return validate_and_return(
+        46173809,
+        math.prod(
+            [
+                len(range(a, b + 1))
+                for a, b in [
+                    quadratic(race_time, distance) for race_time, distance in races
+                ]
             ]
-        ]
+        ),
     )
 
 
 def part01(lines):
     races = parse_lines(lines)
-    return math.prod(
-        [
-            len(range(a, b + 1))
-            for a, b in [
-                quadratic(race_time, distance) for race_time, distance in races
+    return validate_and_return(
+        608902,
+        math.prod(
+            [
+                len(range(a, b + 1))
+                for a, b in [
+                    quadratic(race_time, distance) for race_time, distance in races
+                ]
             ]
-        ]
+        ),
     )
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-    with Profile() as profile:
-        print(f"{part01(lines) = } (should be 608902)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
-    with Profile() as profile:
-        print(f"{part02(lines) = } (should be 46173809)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

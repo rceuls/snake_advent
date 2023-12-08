@@ -1,8 +1,6 @@
 import re
-from cProfile import Profile
-from pstats import Stats, SortKey
-from timeit import timeit
 
+from snek_advent import validate_and_return
 
 compiled_sterreke_regex = re.compile(r"(\*)")
 compiled_int_regex = re.compile(r"(\d+)")
@@ -77,7 +75,7 @@ def part02(lines):
             if len(numbers) == 2:
                 total += numbers[0] * numbers[1]
 
-    return total
+    return validate_and_return(total, 84159075)
 
 
 def do_fluff(lines):
@@ -123,27 +121,4 @@ def part01(lines):
                     if c_n not in valid_neighbour or c_p not in valid_neighbour:
                         total += hit["match"]
                         break
-    return total  # 4361
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-    with Profile() as profile:
-        print(f"{part01(lines) = } (should be 539713)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CUMULATIVE).print_stats())
-
-    with Profile() as profile:
-        print(f"{part02(lines) = } (should be 84159075)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CUMULATIVE).print_stats())
+    return validate_and_return(total, 539713)

@@ -1,7 +1,6 @@
 import re
-from cProfile import Profile
-from pstats import Stats, SortKey
-from timeit import timeit
+
+from snek_advent import validate_and_return
 
 regex_green = re.compile(r"(\d+) (green,?;?)")
 regex_red = re.compile(r"(\d+) (red,?;?)")
@@ -23,7 +22,7 @@ def part02(lines):
                 elif "green" in color and tgt_count > max_values["green"]:
                     max_values["green"] = tgt_count
         pwr_total += max_values["blue"] * max_values["green"] * max_values["red"]
-    return pwr_total
+    return validate_and_return(66681, pwr_total)
 
 
 def part01_calc(line, ix):
@@ -48,27 +47,4 @@ def part01(lines):
         ix += 1
         gauss_total -= part01_calc(line, ix)
 
-    return gauss_total
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-        total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-
-    with Profile() as profile:
-        print(f"{part01(lines) = } (should be 2237)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
-    with Profile() as profile:
-        print(f"{part02(lines) = } (should be 66681)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
+    return validate_and_return(2237, gauss_total)

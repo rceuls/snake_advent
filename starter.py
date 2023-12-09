@@ -9,8 +9,9 @@ import snek_advent.day_05 as day05
 import snek_advent.day_06 as day06
 import snek_advent.day_07 as day07
 import snek_advent.day_08 as day08
+import snek_advent.day_09 as day09
 
-iterations = 1
+iterations = 100
 run_everything = False
 day = datetime.now().day
 
@@ -58,3 +59,5 @@ if __name__ == "__main__":
         do(day07.part01, day07.part02, "07")
     if run_everything or day == 8:
         do(day08.part01, day08.part02, "08")
+    if run_everything or day == 9:
+        do(day09.part01, day09.part02, "09")

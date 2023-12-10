@@ -16,41 +16,68 @@ def get_field_symbol(row_and_column, field):
     return field[row_and_column[0]][row_and_column[1]]
 
 
-def assign_or_skip(viable_position, previous_positions):
-    if viable_position not in previous_positions:
+def assign_or_skip(viable_position, previous_positions, previous_position_checker):
+    if viable_position not in previous_position_checker:
         previous_positions.append(viable_position)
+        previous_position_checker.add(viable_position)
         return viable_position
     return None
 
 
-def get_next_field_position(viable_position, field, previous_positions):
+def get_next_field_position(
+    viable_position, field, previous_positions, previous_position_checker
+):
     while viable_position is not None:
         current_symbol = get_field_symbol(viable_position, field)
         (row, column) = viable_position
         if current_symbol == "│":
-            viable_position = assign_or_skip((row + 1, column), previous_positions)
+            viable_position = assign_or_skip(
+                (row + 1, column), previous_positions, previous_position_checker
+            )
             if viable_position is None:
-                viable_position = assign_or_skip((row - 1, column), previous_positions)
+                viable_position = assign_or_skip(
+                    (row - 1, column), previous_positions, previous_position_checker
+                )
         elif current_symbol == "─":
-            viable_position = assign_or_skip((row, column + 1), previous_positions)
+            viable_position = assign_or_skip(
+                (row, column + 1), previous_positions, previous_position_checker
+            )
             if viable_position is None:
-                viable_position = assign_or_skip((row, column - 1), previous_positions)
+                viable_position = assign_or_skip(
+                    (row, column - 1), previous_positions, previous_position_checker
+                )
         elif current_symbol == "└":
-            viable_position = assign_or_skip((row, column + 1), previous_positions)
+            viable_position = assign_or_skip(
+                (row, column + 1), previous_positions, previous_position_checker
+            )
             if viable_position is None:
-                viable_position = assign_or_skip((row - 1, column), previous_positions)
+                viable_position = assign_or_skip(
+                    (row - 1, column), previous_positions, previous_position_checker
+                )
         elif current_symbol == "┘":
-            viable_position = assign_or_skip((row - 1, column), previous_positions)
+            viable_position = assign_or_skip(
+                (row - 1, column), previous_positions, previous_position_checker
+            )
             if viable_position is None:
-                viable_position = assign_or_skip((row, column - 1), previous_positions)
+                viable_position = assign_or_skip(
+                    (row, column - 1), previous_positions, previous_position_checker
+                )
         elif current_symbol == "┐":
-            viable_position = assign_or_skip((row, column - 1), previous_positions)
+            viable_position = assign_or_skip(
+                (row, column - 1), previous_positions, previous_position_checker
+            )
             if viable_position is None:
-                viable_position = assign_or_skip((row + 1, column), previous_positions)
+                viable_position = assign_or_skip(
+                    (row + 1, column), previous_positions, previous_position_checker
+                )
         elif current_symbol == "┌":
-            viable_position = assign_or_skip((row + 1, column), previous_positions)
+            viable_position = assign_or_skip(
+                (row + 1, column), previous_positions, previous_position_checker
+            )
             if viable_position is None:
-                viable_position = assign_or_skip((row, column + 1), previous_positions)
+                viable_position = assign_or_skip(
+                    (row, column + 1), previous_positions, previous_position_checker
+                )
 
 
 def do_fluff(lines):
@@ -103,7 +130,11 @@ def get_loop(lines):
     steps = list()
     steps.append(starting_position)
     steps.append(starter_position)
-    get_next_field_position(starter_position, field, steps)
+
+    previous_position_checker = set()
+    previous_position_checker.add(starting_position)
+    previous_position_checker.add(starting_position)
+    get_next_field_position(starter_position, field, steps, previous_position_checker)
     return steps, field, starting_position
 
 

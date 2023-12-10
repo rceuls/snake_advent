@@ -10,13 +10,21 @@ import snek_advent.day_06 as day06
 import snek_advent.day_07 as day07
 import snek_advent.day_08 as day08
 import snek_advent.day_09 as day09
+import snek_advent.day_10 as day10
 
-iterations = 100
+iterations = 1
 run_everything = False
 day = datetime.now().day
 
 
-def do(part01, part02, friendly_day, strip_lines=True, full_read=False):
+def do(
+    part01,
+    part02,
+    friendly_day,
+    strip_lines=True,
+    full_read=False,
+    iterations_override=None,
+):
     print("**" * 5 + " running day " + friendly_day + " " + "**" * 5)
     with open(f"./resx/day{friendly_day}.txt", "r") as f:
         lines = None
@@ -27,14 +35,22 @@ def do(part01, part02, friendly_day, strip_lines=True, full_read=False):
 
         if iterations > 0:
             total_time = timeit(
-                lambda: part01(lines), number=iterations, globals=globals()
+                lambda: part01(lines),
+                number=iterations
+                if iterations_override is None
+                else iterations_override,
+                globals=globals(),
             )
             print(
                 f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
             )
 
             total_time = timeit(
-                lambda: part02(lines), number=iterations, globals=globals()
+                lambda: part02(lines),
+                number=iterations
+                if iterations_override is None
+                else iterations_override,
+                globals=globals(),
             )
             print(
                 f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
@@ -61,3 +77,5 @@ if __name__ == "__main__":
         do(day08.part01, day08.part02, "08")
     if run_everything or day == 9:
         do(day09.part01, day09.part02, "09")
+    if run_everything or day == 10:
+        do(day10.part01, day10.part02, "10", iterations_override=1)

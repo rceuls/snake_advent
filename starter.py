@@ -47,6 +47,9 @@ def do(
 
 
 if __name__ == "__main__":
+    module_names = [f"day{x:02d}" for x in range(1 if run_everything else day, day)]
+    print(module_names)
+    exit(0)
     if run_everything or day == 1:
         import snek_advent.day_01 as day01
 

@@ -1,6 +1,6 @@
 import re
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 regex_green = re.compile(r"(\d+) (green,?;?)")
 regex_red = re.compile(r"(\d+) (red,?;?)")
@@ -22,7 +22,7 @@ def part02(lines):
                 elif "green" in color and tgt_count > max_values["green"]:
                     max_values["green"] = tgt_count
         pwr_total += max_values["blue"] * max_values["green"] * max_values["red"]
-    return validate_and_return(66681, pwr_total)
+    validate(66681, pwr_total)
 
 
 def part01_calc(line, ix):
@@ -47,4 +47,4 @@ def part01(lines):
         ix += 1
         gauss_total -= part01_calc(line, ix)
 
-    return validate_and_return(2237, gauss_total)
+    validate(2237, gauss_total)

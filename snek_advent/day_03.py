@@ -1,6 +1,6 @@
 import re
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 compiled_sterreke_regex = re.compile(r"(\*)")
 compiled_int_regex = re.compile(r"(\d+)")
@@ -75,7 +75,7 @@ def part02(lines):
             if len(numbers) == 2:
                 total += numbers[0] * numbers[1]
 
-    return validate_and_return(total, 84159075)
+    validate(total, 84159075)
 
 
 def do_fluff(lines):
@@ -121,4 +121,4 @@ def part01(lines):
                     if c_n not in valid_neighbour or c_p not in valid_neighbour:
                         total += hit["match"]
                         break
-    return validate_and_return(total, 539713)
+    validate(total, 539713)

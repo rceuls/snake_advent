@@ -2,7 +2,7 @@ import cmath
 import math
 import re
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 digit_regex = re.compile("\d+")
 
@@ -30,7 +30,7 @@ def quadratic(race_time, distance):
 
 def part02(lines):
     races = list(parse_lines([x.replace(" ", "") for x in lines]))
-    return validate_and_return(
+    validate(
         46173809,
         math.prod(
             [
@@ -45,7 +45,7 @@ def part02(lines):
 
 def part01(lines):
     races = parse_lines(lines)
-    return validate_and_return(
+    validate(
         608902,
         math.prod(
             [

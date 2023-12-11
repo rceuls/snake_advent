@@ -1,4 +1,4 @@
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 
 def calculate_lcm(arr):
@@ -52,10 +52,10 @@ def part02(lines):
     for node in target_labels:
         distances.append(traverse_dictionary(lines[0], nodes_dict, node["home_label"]))
 
-    return validate_and_return(12030780859469, calculate_lcm(distances))
+    validate(12030780859469, calculate_lcm(distances))
 
 
 def part01(lines):
     nodes = [convert_to_node(x, True) for x in lines[2:]]
     nodes_dict = {node["home_label"]: node for node in nodes}
-    return validate_and_return(12169, traverse_dictionary(lines[0], nodes_dict, "AAA"))
+    validate(12169, traverse_dictionary(lines[0], nodes_dict, "AAA"))

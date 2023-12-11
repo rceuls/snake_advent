@@ -1,7 +1,7 @@
 import re
 from functools import reduce
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 written_out = {
     1: ["one", "1", "one"[::-1]],
@@ -24,7 +24,7 @@ def part01(lines):
         map((lambda x: compiled_regex.findall(x)), lines),
         0,
     )
-    return validate_and_return(54597, value)
+    validate(54597, value)
 
 
 def part02_parse_line(line, reversed_line):
@@ -55,4 +55,4 @@ def part02(lines):
     value = reduce(
         lambda x, y: x + y, map(lambda l: part02_parse_line(l, l[::-1]), lines)
     )
-    return validate_and_return(54504, value)
+    validate(54504, value)

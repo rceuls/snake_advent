@@ -1,6 +1,6 @@
 from functools import reduce
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 
 def create_lines(line):
@@ -28,9 +28,7 @@ def calculate_line(line):
 
 
 def part01(lines):
-    return validate_and_return(
-        1987402313, (reduce(lambda x, y: x + y, map(calculate_line, lines)))
-    )
+    validate(1987402313, (reduce(lambda x, y: x + y, map(calculate_line, lines))))
 
 
 def calculate_line_part2(line):
@@ -43,6 +41,4 @@ def calculate_line_part2(line):
 
 
 def part02(lines):
-    return validate_and_return(
-        900, reduce(lambda x, y: x + y, map(calculate_line_part2, lines))
-    )
+    validate(900, reduce(lambda x, y: x + y, map(calculate_line_part2, lines)))

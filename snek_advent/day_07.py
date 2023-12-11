@@ -3,7 +3,7 @@ from functools import total_ordering
 from itertools import groupby
 from multiprocessing import Pool
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 key_resolver = {
     "A": 14,
@@ -149,7 +149,7 @@ def part02(lines):
         draws = pool.map(parse_joker, lines)
         sorted_draws = sorted(draws)
         value = calculate_totals(sorted_draws)
-        return validate_and_return(251735672, value)
+        validate(251735672, value)
 
 
 def part01(lines):
@@ -157,4 +157,4 @@ def part01(lines):
         draws = pool.map(parse, lines)
         sorted_draws = sorted(draws)
         value = calculate_totals(sorted_draws)
-        return validate_and_return(250370104, value)
+        validate(250370104, value)

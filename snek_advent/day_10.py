@@ -1,7 +1,7 @@
 from matplotlib.path import Path
 from termcolor import colored
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 
 def get_animal_starting_position(field):
@@ -140,7 +140,7 @@ def get_loop(lines):
 
 def part01(lines):
     (steps, field, _) = get_loop(lines)
-    return validate_and_return(int(len(steps) / 2), 6828)
+    validate(int(len(steps) / 2), 6828)
 
 
 def part02(lines):
@@ -169,4 +169,4 @@ def part02(lines):
                 else:
                     print(colored(" "), end="")
         print("\n")
-    return validate_and_return(contained, 459)
+    validate(contained, 459)

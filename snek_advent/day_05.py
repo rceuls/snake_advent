@@ -3,7 +3,7 @@ from cProfile import Profile
 from pstats import Stats, SortKey
 from timeit import timeit
 
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 digit_regex = re.compile("\d+")
 
@@ -76,7 +76,7 @@ def part02(lines):
             tgt = parse_target(inv, tgt)
         for s in seeds:
             if s[0] <= tgt <= s[1]:
-                return validate_and_return(ix, 34039469)
+                validate(ix, 34039469)
         ix += 1
 
     return -1
@@ -91,7 +91,7 @@ def part01(lines):
             tgt = parse_target(line, tgt)
         if tgt < lowest:
             lowest = tgt
-    return validate_and_return(lowest, 26273516)
+    validate(lowest, 26273516)
 
 
 def do(iterations, lines, do_profile=False):

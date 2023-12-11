@@ -1,26 +1,25 @@
-from functools import reduce
-from snek_advent import validate_and_return
+from snek_advent import validate
 
 
 def expand_universe(lines):
     universe = [list(l) for l in lines]
     universe_width = len(universe[0])
     universe_height = len(universe)
-    empty_row = list(universe_width * ".")
     rows_to_insert = set()
     for x in range(universe_height):
-        if universe[x] == empty_row:
+        row_set = set(universe[x])
+        if len(row_set) == 1 and row_set.pop() == ".":
             rows_to_insert.add(x)
 
     empty_column = list(universe_height * ".")
     columns_to_insert = set()
 
-    for column in range(universe_width):
-        under_review = list()
-        for row in range(universe_height):
-            under_review.append(universe[row][column])
-        if under_review == empty_column:
-            columns_to_insert.add(column)
+    turned = [
+        [universe[j][i] for j in range(universe_height)] for i in range(universe_width)
+    ]
+    for x in range(universe_width):
+        if turned[x] == empty_column:
+            columns_to_insert.add(x)
 
     return universe, rows_to_insert, columns_to_insert, universe_height, universe_width
 
@@ -72,9 +71,9 @@ def calculate_distance(empty_counts_for, lines):
 
 def part01(lines):
     total = calculate_distance(2, lines)
-    validate_and_return(9805264, total)
+    validate(9805264, total)
 
 
 def part02(lines):
     total = calculate_distance(1_000_000, lines)
-    validate_and_return(779032247216, total)
+    validate(779032247216, total)

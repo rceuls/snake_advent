@@ -10,7 +10,7 @@ import snek_advent.day_06 as day06
 import snek_advent.day_07 as day07
 import snek_advent.day_08 as day08
 import snek_advent.day_09 as day09
-import snek_advent.day_10 as day10
+import snek_advent.day_11 as day11
 
 iterations = 1
 run_everything = False
@@ -78,4 +78,13 @@ if __name__ == "__main__":
     if run_everything or day == 9:
         do(day09.part01, day09.part02, "09")
     if run_everything or day == 10:
+        import snek_advent.day_10 as day10
+
         do(day10.part01, day10.part02, "10", iterations_override=1)
+    if run_everything or day == 11:
+        do(
+            day11.part01,
+            day11.part02,
+            "11",
+            iterations_override=1 if day == 11 else 100,
+        )

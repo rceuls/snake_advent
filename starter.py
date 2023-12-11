@@ -1,9 +1,10 @@
+import importlib
 from datetime import datetime
 from timeit import timeit
 
-iterations = 1
-run_everything = False
-day = datetime.now().day
+dev_mode = True
+iterations = 100
+run_everything = True
 
 
 def do(
@@ -47,56 +48,22 @@ def do(
 
 
 if __name__ == "__main__":
-    module_names = [f"day{x:02d}" for x in range(1 if run_everything else day, day)]
+    if dev_mode:
+        iterations = 1
+        run_everything = False
+        day = datetime.now().day
+
+    module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
     print(module_names)
-    exit(0)
-    if run_everything or day == 1:
-        import snek_advent.day_01 as day01
 
-        do(day01.part01, day01.part02, "01")
-    if run_everything or day == 2:
-        import snek_advent.day_02 as day02
-
-        do(day02.part01, day02.part02, "02")
-    if run_everything or day == 3:
-        import snek_advent.day_03 as day03
-
-        do(day03.part01, day03.part02, "03", strip_lines=False)
-    if run_everything or day == 4:
-        import snek_advent.day_04 as day04
-
-        do(day04.part01, day04.part02, "04")
-    if run_everything or day == 5:
-        print("sadly, part one executes two times as part two as it takes half an hour")
-        import snek_advent.day_05 as day05
-
-        do(day05.part01, day05.part01, "05", full_read=True)
-    if run_everything or day == 6:
-        import snek_advent.day_06 as day06
-
-        do(day06.part01, day06.part02, "06")
-    if run_everything or day == 7:
-        import snek_advent.day_07 as day07
-
-        do(day07.part01, day07.part02, "07")
-    if run_everything or day == 8:
-        import snek_advent.day_08 as day08
-
-        do(day08.part01, day08.part02, "08")
-    if run_everything or day == 9:
-        import snek_advent.day_09 as day09
-
-        do(day09.part01, day09.part02, "09")
-    if run_everything or day == 10:
-        import snek_advent.day_10 as day10
-
-        do(day10.part01, day10.part02, "10", iterations_override=1)
-    if run_everything or day == 11:
-        import snek_advent.day_11 as day11
-
-        do(day11.part01, day11.part02, "11")
-
-    if run_everything or day == 12:
-        import snek_advent.day_12 as day12
-
-        do(day12.part01, day12.part02, "12")
+    for mod_name in module_names:
+        module = importlib.import_module(f"snek_advent.day_{mod_name}")
+        match mod_name:
+            case "03":
+                do(module.part01, module.part02, "03", strip_lines=False)
+            case "05":
+                do(module.part01, module.part01, "05", full_read=True)
+            case "10":
+                do(module.part01, module.part02, "10", iterations_override=10)
+            case _:
+                do(module.part01, module.part02, mod_name)

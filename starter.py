@@ -5,6 +5,7 @@ from timeit import timeit
 dev_mode = True
 iterations = 100
 run_everything = True
+day = datetime.now().day
 
 
 def do(
@@ -51,9 +52,8 @@ if __name__ == "__main__":
     if dev_mode:
         iterations = 1
         run_everything = False
-        day = datetime.now().day
 
-    module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
+    module_names = [f"{x:02d}" for x in range(1 if dev_mode else day + 1)]
     print(module_names)
 
     for mod_name in module_names:

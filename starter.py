@@ -1,9 +1,11 @@
 import importlib
+import os
 from datetime import datetime
 from timeit import timeit
 
-iterations = 1
-run_everything = False
+DEV_MODE = os.environ.get("DEV_MODE", "false") == "true"
+iterations = 100
+run_everything = True
 day = datetime.now().day
 
 
@@ -48,8 +50,16 @@ def do(
 
 
 if __name__ == "__main__":
+    if DEV_MODE:
+        run_everything = False
+        iterations = 1
     module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
-    print(module_names)
+    print(
+        "running modules:",
+        module_names,
+        ", dev mode is",
+        "enabled" if DEV_MODE else "disabled",
+    )
     for mod_name in module_names:
         module = importlib.import_module(f"snek_advent.day_{mod_name}")
         match mod_name:
@@ -57,7 +67,5 @@ if __name__ == "__main__":
                 do(module.part01, module.part02, "03", strip_lines=False)
             case "05":
                 do(module.part01, module.part01, "05", full_read=True)
-            case "10":
-                do(module.part01, module.part02, "10", iterations_override=10)
             case _:
                 do(module.part01, module.part02, mod_name)

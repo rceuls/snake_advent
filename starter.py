@@ -2,7 +2,7 @@ from datetime import datetime
 from timeit import timeit
 
 iterations = 1
-run_everything = True
+run_everything = False
 day = datetime.now().day
 
 

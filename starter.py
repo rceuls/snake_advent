@@ -1,7 +1,6 @@
 from datetime import datetime
 from timeit import timeit
 
-import snek_advent.day_01 as day01
 import snek_advent.day_02 as day02
 import snek_advent.day_03 as day03
 import snek_advent.day_04 as day04
@@ -12,7 +11,7 @@ import snek_advent.day_08 as day08
 import snek_advent.day_09 as day09
 import snek_advent.day_11 as day11
 
-iterations = 1
+iterations = 100
 run_everything = False
 day = datetime.now().day
 
@@ -59,6 +58,8 @@ def do(
 
 if __name__ == "__main__":
     if run_everything or day == 1:
+        import snek_advent.day_01 as day01
+
         do(day01.part01, day01.part02, "01")
     if run_everything or day == 2:
         do(day02.part01, day02.part02, "02")
@@ -82,9 +83,4 @@ if __name__ == "__main__":
 
         do(day10.part01, day10.part02, "10", iterations_override=1)
     if run_everything or day == 11:
-        do(
-            day11.part01,
-            day11.part02,
-            "11",
-            iterations_override=1 if day == 11 else 100,
-        )
+        do(day11.part01, day11.part02, "11")

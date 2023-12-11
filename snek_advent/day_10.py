@@ -138,12 +138,12 @@ def get_loop(lines):
     return steps, field, starting_position
 
 
-def part01(lines):
+def part01(lines: list[str]):
     (steps, field, _) = get_loop(lines)
     validate(int(len(steps) / 2), 6828)
 
 
-def part02(lines):
+def part02(lines: list[str]):
     (steps, field, start_coords) = get_loop(lines)
     polygon = Path(list(steps))
     contained = 0

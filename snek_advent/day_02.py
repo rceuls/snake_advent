@@ -7,7 +7,7 @@ regex_red = re.compile(r"(\d+) (red,?;?)")
 regex_blue = re.compile(r"(\d+) (blue,?;?)")
 
 
-def part02(lines):
+def part02(lines: list[str]):
     pwr_total = 0
     for super_line in lines:
         line = super_line.split(":")
@@ -38,7 +38,7 @@ def part01_calc(line, ix):
     return 0
 
 
-def part01(lines):
+def part01(lines: list[str]):
     game_count = len(lines)
     gauss_total = int(1 / 2 * (game_count * (game_count + 1)))
     ix = 0

@@ -144,7 +144,7 @@ def calculate_totals(items):
     return total
 
 
-def part02(lines):
+def part02(lines: list[str]):
     with Pool(16) as pool:
         draws = pool.map(parse_joker, lines)
         sorted_draws = sorted(draws)
@@ -152,7 +152,7 @@ def part02(lines):
         validate(251735672, value)
 
 
-def part01(lines):
+def part01(lines: list[str]):
     with Pool(16) as pool:
         draws = pool.map(parse, lines)
         sorted_draws = sorted(draws)

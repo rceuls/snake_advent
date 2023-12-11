@@ -1,7 +1,7 @@
 from snek_advent import validate
 
 
-def expand_universe(lines):
+def expand_universe(lines: list[str]):
     universe = [list(l) for l in lines]
     universe_width = len(universe[0])
     universe_height = len(universe)
@@ -69,11 +69,11 @@ def calculate_distance(empty_counts_for, lines):
     return total
 
 
-def part01(lines):
+def part01(lines: list[str]):
     total = calculate_distance(2, lines)
     validate(9805264, total)
 
 
-def part02(lines):
+def part02(lines: list[str]):
     total = calculate_distance(1_000_000, lines)
     validate(779032247216, total)

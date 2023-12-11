@@ -27,7 +27,7 @@ def calculate_line(line):
     return lines[0][-1]
 
 
-def part01(lines):
+def part01(lines: list[str]):
     validate(1987402313, (reduce(lambda x, y: x + y, map(calculate_line, lines))))
 
 
@@ -40,5 +40,5 @@ def calculate_line_part2(line):
     return lines[0][0]
 
 
-def part02(lines):
+def part02(lines: list[str]):
     validate(900, reduce(lambda x, y: x + y, map(calculate_line_part2, lines)))

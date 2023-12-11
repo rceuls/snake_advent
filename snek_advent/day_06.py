@@ -28,7 +28,7 @@ def quadratic(race_time, distance):
     return math.ceil(tres[0]), math.floor(tres[1])
 
 
-def part02(lines):
+def part02(lines: list[str]):
     races = list(parse_lines([x.replace(" ", "") for x in lines]))
     validate(
         46173809,
@@ -43,7 +43,7 @@ def part02(lines):
     )
 
 
-def part01(lines):
+def part01(lines: list[str]):
     races = parse_lines(lines)
     validate(
         608902,

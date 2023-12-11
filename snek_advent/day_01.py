@@ -18,7 +18,7 @@ written_out = {
 compiled_regex = re.compile(r"\d")
 
 
-def part01(lines):
+def part01(lines: list[str]):
     value = reduce(
         (lambda p, n: p + int(f"{n[0]}{n[-1]}")),
         map((lambda x: compiled_regex.findall(x)), lines),
@@ -51,7 +51,7 @@ def part02_parse_line(line, reversed_line):
     return last_number_found + (10 * first_number_found)
 
 
-def part02(lines):
+def part02(lines: list[str]):
     value = reduce(
         lambda x, y: x + y, map(lambda l: part02_parse_line(l, l[::-1]), lines)
     )

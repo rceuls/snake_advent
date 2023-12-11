@@ -9,7 +9,7 @@ def calculate_win(card):
     return card
 
 
-def part02(lines):
+def part02(lines: list[str]):
     (_, parsed) = part01(lines)
     total = len(parsed.keys())
     all_cards = []
@@ -28,7 +28,7 @@ def part02(lines):
 pre_compiled_whitespace_replacer = re.compile(r"\s+")
 
 
-def part01(lines):
+def part01(lines: list[str]):
     total = 0
     games = {}
     for ix in range(0, len(lines)):

@@ -42,7 +42,7 @@ def convert_to_node(line, is_part_one):
     }
 
 
-def part02(lines):
+def part02(lines: list[str]):
     nodes = [convert_to_node(x, False) for x in lines[2:]]
     nodes_dict = {node["home_label"]: node for node in nodes}
 
@@ -55,7 +55,7 @@ def part02(lines):
     validate(12030780859469, calculate_lcm(distances))
 
 
-def part01(lines):
+def part01(lines: list[str]):
     nodes = [convert_to_node(x, True) for x in lines[2:]]
     nodes_dict = {node["home_label"]: node for node in nodes}
     validate(12169, traverse_dictionary(lines[0], nodes_dict, "AAA"))

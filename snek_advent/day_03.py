@@ -13,7 +13,7 @@ def check_overlap(start, end, n_start, n_end, match):
         return None
 
 
-def part02(lines):
+def part02(lines: list[str]):
     actual_lines = do_fluff(lines)
     total = 0
     matches_per_line = {}
@@ -88,7 +88,7 @@ def do_fluff(lines):
     return fluffed
 
 
-def part01(lines):
+def part01(lines: list[str]):
     actual_lines = do_fluff(lines)
     total = 0
     valid_neighbour = ".012345789"

@@ -56,7 +56,7 @@ def parse_target(mapper, up_next):
     return up_next
 
 
-def part02(lines):
+def part02(lines: list[str]):
     mapper = parse_input_inverse(lines)
     inversed = mapper["converters"][::-1]
     old_seeds = mapper["seeds"]
@@ -79,7 +79,7 @@ def part02(lines):
     return -1
 
 
-def part01(lines):
+def part01(lines: list[str]):
     mapper = parse_input(lines)
     lowest = 2**31
     for seed in mapper["seeds"]:

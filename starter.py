@@ -1,18 +1,8 @@
 from datetime import datetime
 from timeit import timeit
 
-import snek_advent.day_02 as day02
-import snek_advent.day_03 as day03
-import snek_advent.day_04 as day04
-import snek_advent.day_05 as day05
-import snek_advent.day_06 as day06
-import snek_advent.day_07 as day07
-import snek_advent.day_08 as day08
-import snek_advent.day_09 as day09
-import snek_advent.day_11 as day11
-
-iterations = 100
-run_everything = False
+iterations = 1
+run_everything = True
 day = datetime.now().day
 
 
@@ -62,25 +52,48 @@ if __name__ == "__main__":
 
         do(day01.part01, day01.part02, "01")
     if run_everything or day == 2:
+        import snek_advent.day_02 as day02
+
         do(day02.part01, day02.part02, "02")
     if run_everything or day == 3:
+        import snek_advent.day_03 as day03
+
         do(day03.part01, day03.part02, "03", strip_lines=False)
     if run_everything or day == 4:
+        import snek_advent.day_04 as day04
+
         do(day04.part01, day04.part02, "04")
     if run_everything or day == 5:
         print("sadly, part one executes two times as part two as it takes half an hour")
+        import snek_advent.day_05 as day05
+
         do(day05.part01, day05.part01, "05", full_read=True)
     if run_everything or day == 6:
+        import snek_advent.day_06 as day06
+
         do(day06.part01, day06.part02, "06")
     if run_everything or day == 7:
+        import snek_advent.day_07 as day07
+
         do(day07.part01, day07.part02, "07")
     if run_everything or day == 8:
+        import snek_advent.day_08 as day08
+
         do(day08.part01, day08.part02, "08")
     if run_everything or day == 9:
+        import snek_advent.day_09 as day09
+
         do(day09.part01, day09.part02, "09")
     if run_everything or day == 10:
         import snek_advent.day_10 as day10
 
         do(day10.part01, day10.part02, "10", iterations_override=1)
     if run_everything or day == 11:
+        import snek_advent.day_11 as day11
+
         do(day11.part01, day11.part02, "11")
+
+    if run_everything or day == 12:
+        import snek_advent.day_12 as day12
+
+        do(day12.part01, day12.part02, "12")

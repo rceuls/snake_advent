@@ -1,7 +1,4 @@
 import re
-from cProfile import Profile
-from pstats import Stats, SortKey
-from timeit import timeit
 
 from snek_advent import validate
 
@@ -92,27 +89,3 @@ def part01(lines):
         if tgt < lowest:
             lowest = tgt
     validate(lowest, 26273516)
-
-
-def do(iterations, lines, do_profile=False):
-    if iterations > 0:
-        total_time = timeit(lambda: part01(lines), number=iterations, globals=globals())
-        print(
-            f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        )
-        #
-        # total_time = timeit(lambda: part02(lines), number=iterations, globals=globals())
-        # print(
-        #     f"Average time is {total_time / iterations:.10f} seconds ({iterations} iterations)"
-        # )
-
-    with Profile() as profile:
-        print(f"{part01(lines) = } (should be 26273516)")
-        if do_profile:
-            (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())
-
-    # takes half an hour :sweat:
-    # with Profile() as profile:
-    #     print(f"{part02(lines) = } (should be 34039469)")
-    #     if do_profile:
-    #         (Stats(profile).strip_dirs().sort_stats(SortKey.CALLS).print_stats())

@@ -8,7 +8,7 @@ spring_regex = re.compile(r"#*")
 
 @cache
 def check_springs(line, springs, result=0):
-    if not springs:
+    if springs == ():
         return "#" not in line
     current, springs = springs[0], springs[1:]
     for i in range(len(line) - sum(springs) - len(springs) - current + 1):

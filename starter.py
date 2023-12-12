@@ -50,16 +50,11 @@ def do(
 
 
 if __name__ == "__main__":
+    DEV_MODE = True
     if DEV_MODE:
         run_everything = False
         iterations = 1
     module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
-    print(
-        "running modules:",
-        module_names,
-        ", dev mode is",
-        "enabled" if DEV_MODE else "disabled",
-    )
     for mod_name in module_names:
         module = importlib.import_module(f"snek_advent.day_{mod_name}")
         match mod_name:

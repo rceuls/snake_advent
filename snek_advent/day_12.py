@@ -28,7 +28,7 @@ def check_springs(line, springs, result=0):
 def part01(lines: list[str]):
     total = 0
     for line in [line.split() for line in lines]:
-        check = check_springs(line[0], (springs := tuple(map(int, line[1].split(",")))))
+        check = check_springs(line[0], tuple(map(int, line[1].split(","))))
         total += check
     validate(total, 6935)
 
@@ -37,8 +37,7 @@ def part02(lines: list[str]):
     total = 0
     for line in [line.split() for line in lines]:
         check = check_springs(
-            "?".join([line[0]] * 5),
-            (springs := tuple(5 * list(map(int, line[1].split(","))))),
+            "?".join([line[0]] * 5), tuple(5 * list(map(int, line[1].split(","))))
         )
         total += check
     validate(total, 3920437278260)

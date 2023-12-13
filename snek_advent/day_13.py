@@ -34,24 +34,25 @@ def find_vertical_mirror(field):
     return 0
 
 
-def part01(lines: list):
-    fields = get_fields(lines)
+def calc_field(field):
+    row = find_vertical_mirror(field)
+    column = find_vertical_mirror(transpose_field(field))
+    return (row, column)
+
+
+def part01(text: str):
+    fields = get_fields(text)
     total_columns = 0
     total_rows = 0
-    for field in fields:
-        row = find_vertical_mirror(field)
-        column = find_vertical_mirror(transpose_field(field))
-        total_rows += row
-        total_columns += column
+    rows_and_columns = map(calc_field, fields)
 
-        print(row, column)
+    for r in rows_and_columns:
+        total_columns += r[1]
+        total_rows += r[0]
 
-    print(total_columns * 100 + total_rows)
+    hits = total_columns * 100 + total_rows
 
-    ## 42214 too low
-    ## high: 90328
-
-    validate(0, 0)
+    validate(hits, 43614)
 
 
 def part02(lines: list[str]):

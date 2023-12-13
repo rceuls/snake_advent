@@ -61,6 +61,8 @@ if __name__ == "__main__":
             case "03":
                 do(module.part01, module.part02, "03", strip_lines=False)
             case "05":
-                do(module.part01, module.part01, "05", full_read=True)
+                do(module.part01, module.part01, mod_name, full_read=True)
+            case "13":
+                do(module.part01, module.part01, mod_name, full_read=True)
             case _:
                 do(module.part01, module.part02, mod_name)

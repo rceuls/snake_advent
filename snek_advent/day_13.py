@@ -1,29 +1,22 @@
 from snek_advent import validate
 
 
-def get_fields(lines: list[str]):
+def get_fields(text):
     fields = []
     field = []
     ix = 0
-    for line in lines:
+    for line in text.split("\n\n"):
         ix += 1
-        if line == "" or ix == len(lines):
-            fields.append(field)
-            field = []
-        else:
-            field.append(line)
+        for subline in line.split("\n"):
+            fields.append(subline.strip())
     return fields
 
 
 def transpose_field(field):
-    data = [[field[j][i] for j in range(len(field))] for i in range(len(field[0]))]
-    as_string = []
-    for d in data:
-        as_string.insert(0, "".join(d))
-    return as_string
+    return [[field[j][i] for j in range(len(field))] for i in range(len(field[0]))]
 
 
-def find_row_mirror(field):
+def find_vertical_mirror(field):
     width = len(field[0])
     height = len(field[0])
     for x in range(1, width):
@@ -38,32 +31,26 @@ def find_row_mirror(field):
 
         if row_matches == height:
             return x
-    return -1
+    return 0
 
 
-def part01(lines: list[str]):
+def part01(lines: list):
     fields = get_fields(lines)
     total_columns = 0
     total_rows = 0
-    ix = 0
     for field in fields:
-        ix += 1
-        row = find_row_mirror(field)
-        column = find_row_mirror(transpose_field(field))
-        total_rows += row if row != -1 else 0
-        total_columns += column if column != -1 else 0
-        if row == column == -1:
-            print(ix, field[0], row, column)
-            print("\n".join(field))
-            print("-" * 80)
-            row = find_row_mirror(field)
-            print("\n".join(transpose_field(field)))
+        print("\n".join(field))
+        row = find_vertical_mirror(field)
+        column = find_vertical_mirror(transpose_field(field))
+        total_rows += row
+        total_columns += column
 
-            column = find_row_mirror(transpose_field(field))
+        print(row, column)
 
     print(total_columns * 100 + total_rows)
 
     ## 42214 too low
+    ## high: 90328
 
     validate(0, 0)
 

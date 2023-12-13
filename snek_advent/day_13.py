@@ -2,13 +2,14 @@ from snek_advent import validate
 
 
 def get_fields(text):
-    fields = []
-    field = []
-    ix = 0
+    fields = list()
     for line in text.split("\n\n"):
-        ix += 1
+        field = list()
         for subline in line.split("\n"):
-            fields.append(subline.strip())
+            line = list(subline.strip())
+            if line:
+                field.append(line)
+        fields.append(field)
     return fields
 
 
@@ -28,7 +29,6 @@ def find_vertical_mirror(field):
             if left != right:
                 row_matches -= 1
                 break
-
         if row_matches == height:
             return x
     return 0
@@ -39,7 +39,6 @@ def part01(lines: list):
     total_columns = 0
     total_rows = 0
     for field in fields:
-        print("\n".join(field))
         row = find_vertical_mirror(field)
         column = find_vertical_mirror(transpose_field(field))
         total_rows += row

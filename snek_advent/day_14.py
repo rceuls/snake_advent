@@ -107,7 +107,7 @@ def do_the_thing(number, lines):
         lines_key = lines.__str__()
         if lines_key in cache:
             cycle_length = current_spin - cache[lines_key]
-            remaining_cycles = (1_000_000_000 - current_spin) % cycle_length
+            remaining_cycles = (number - current_spin) % cycle_length
             for _ in range(remaining_cycles):
                 lines = do_spin(lines)
             return lines

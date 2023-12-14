@@ -87,11 +87,7 @@ def calculate_weight(lines):
 def part01(lines: list[str]):
     lines = [list(l) for l in lines]
     lines = shake_stones(lines, DIR_NORTH)
-    print(calculate_weight(lines))
-
-
-def generate_key_from_result(lines: list[str]):
-    return lines.__str__()
+    validate(calculate_weight(lines), 109098)
 
 
 def do_spin(lines):
@@ -102,23 +98,22 @@ def do_spin(lines):
 
 
 def do_the_thing(number, lines):
-    cache = {}
+    precache = {}
     for current_spin in range(number):
         lines_key = lines.__str__()
-        if lines_key in cache:
+        if lines_key in precache:
             cycle_length = current_spin - cache[lines_key]
             remaining_cycles = (number - current_spin) % cycle_length
             for _ in range(remaining_cycles):
                 lines = do_spin(lines)
             return lines
 
-        cache[lines_key] = current_spin
+        precache[lines_key] = current_spin
         lines = do_spin(lines)
 
 
 # N W S E LTR
 def part02(lines: list[str]):
     lines = [list(l) for l in lines]
-
     print(calculate_weight(do_the_thing(1_000_000_000, lines)))
-    validate(0, 0)
+    validate(calculate_weight(lines), 100064)

@@ -50,6 +50,7 @@ def do(
 
 
 if __name__ == "__main__":
+    DEV_MODE = True
     if DEV_MODE:
         run_everything = False
         iterations = 1

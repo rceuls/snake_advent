@@ -39,20 +39,6 @@ def update_line(line: [str], drop_to_the: LEFT or RIGHT):
     return working_copy
 
 
-transposed_stones = {}
-
-
-def get_cache_key(lines):
-    to_hash = ""
-    for line in lines:
-        to_hash += "".join(line)
-    return hash(to_hash)
-
-
-def cache(key, result):
-    transposed_stones[key] = result
-
-
 def shake_stones(
     lines,
     direction: DIR_NORTH or DIR_WEST or DIR_SOUTH or DIR_EAST = DIR_NORTH,
@@ -84,12 +70,6 @@ def calculate_weight(lines):
     return total_bearing_stones
 
 
-def part01(lines: list[str]):
-    lines = [list(l) for l in lines]
-    lines = shake_stones(lines, DIR_NORTH)
-    validate(calculate_weight(lines), 109098)
-
-
 def do_spin(lines):
     rollers = [DIR_NORTH, DIR_WEST, DIR_SOUTH, DIR_EAST]
     for r in rollers:
@@ -102,7 +82,7 @@ def do_the_thing(number, lines):
     for current_spin in range(number):
         lines_key = lines.__str__()
         if lines_key in precache:
-            cycle_length = current_spin - cache[lines_key]
+            cycle_length = current_spin - precache[lines_key]
             remaining_cycles = (number - current_spin) % cycle_length
             for _ in range(remaining_cycles):
                 lines = do_spin(lines)
@@ -112,8 +92,13 @@ def do_the_thing(number, lines):
         lines = do_spin(lines)
 
 
+def part01(lines: list[str]):
+    lines = [list(l) for l in lines]
+    lines = shake_stones(lines, DIR_NORTH)
+    validate(calculate_weight(lines), 109098)
+
+
 # N W S E LTR
 def part02(lines: list[str]):
     lines = [list(l) for l in lines]
-    print(calculate_weight(do_the_thing(1_000_000_000, lines)))
-    validate(calculate_weight(lines), 100064)
+    validate(calculate_weight(do_the_thing(1_000_000_000, lines)), 100064)

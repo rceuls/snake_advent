@@ -36,16 +36,19 @@ def part02(lines: list[str]):
     data = "".join(lines).split(",")
     actions = [BoxAction(x) for x in data]
     boxes = {k: OrderedDict() for k in range(0, 256)}
-    for action in actions:
-        match action.action:
+    for line in data:
+        action = "REMOVE" if line.count("-") == 1 else "REPLACE"
+        (box, value) = line.split("-") if action == "REMOVE" else line.split("=")
+        box_index = hash(box)
+        match action:
             case "REMOVE":
-                if action.lens_label in boxes[action.box]:
-                    del boxes[action.box][action.lens_label]
+                if box_index in boxes[box]:
+                    del boxes[box_index][box]
             case "REPLACE":
-                if action.lens_label in boxes[action.box]:
-                    boxes[action.box][action.lens_label] = action.focal_length
+                if box in boxes[box_index]:
+                    boxes[box_index][box] = int(value)
                 else:
-                    boxes[action.box][action.lens_label] = action.focal_length
+                    boxes[box_index][box] = int(value)
 
     curr_offset = 1
     total = 0

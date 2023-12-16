@@ -1,5 +1,3 @@
-from sys import setrecursionlimit
-
 from snek_advent import validate
 
 
@@ -81,14 +79,12 @@ def follow_beam(field, pos, direction):
 
 
 def part01(lines: list[str]):
-    setrecursionlimit(int(1e6))
     field = [list(x) for x in lines]
     follow_beam(field, (0, 0), "E")
     validate(len(field_pos_and_entries), 7788)
 
 
 def part02(lines: list[str]):
-    setrecursionlimit(int(1e6))
     field = [list(x) for x in lines]
 
     max_found = 0

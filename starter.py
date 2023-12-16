@@ -1,12 +1,15 @@
 import importlib
 import os
 from datetime import datetime
+from sys import setrecursionlimit
 from timeit import timeit
 
 DEV_MODE = os.environ.get("DEV_MODE", "false") == "true"
 iterations = 100
 run_everything = False
 day = 13
+
+setrecursionlimit(int(1e6))
 
 
 def do(

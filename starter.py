@@ -6,7 +6,7 @@ from timeit import timeit
 DEV_MODE = os.environ.get("DEV_MODE", "false") == "true"
 iterations = 100
 run_everything = False
-day = 13
+day = datetime.now().day
 
 
 def do(
@@ -50,11 +50,9 @@ def do(
 
 
 if __name__ == "__main__":
-    DEV_MODE = True
     if DEV_MODE:
         run_everything = False
         iterations = 1
-        day = datetime.now().day
     module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
     for mod_name in module_names:
         module = importlib.import_module(f"snek_advent.day_{mod_name}")

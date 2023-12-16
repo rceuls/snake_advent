@@ -53,7 +53,7 @@ if __name__ == "__main__":
     DEV_MODE = True
     if DEV_MODE:
         run_everything = False
-        iterations = 100
+        iterations = 1
         day = datetime.now().day
     module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
     for mod_name in module_names:

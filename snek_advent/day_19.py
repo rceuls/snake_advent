@@ -45,9 +45,6 @@ class Workflow:
                         category=target,
                     )
                 )
-        # for l in "xmas":
-        #     if l not in self.ranges:
-        #         self.ranges[l] = range(0, 4001)
         self.predicates = predicates
         self.default = raw_predicates[-1]
 
@@ -108,7 +105,7 @@ def part01(lines: list[str]):
     for p in parts:
         total += handle(p, wfd, wfd["in"])
 
-    # validate(total, 263678)
+    validate(total, 263678)
 
 
 def update_range(d, key, value):
@@ -155,5 +152,4 @@ def part02(lines: list[str]):
                 ranges[category] = old_range
             else:
                 q.append((workflow.default, ranges))
-    print(result)
-    validate(0, 0)
+    validate(result, 125455345557345)

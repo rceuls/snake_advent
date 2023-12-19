@@ -53,6 +53,7 @@ if __name__ == "__main__":
     if DEV_MODE:
         run_everything = False
         iterations = 1
+        day = 17
     module_names = [f"{x:02d}" for x in range(1 if run_everything else day, day + 1)]
     for mod_name in module_names:
         module = importlib.import_module(f"snek_advent.day_{mod_name}")
